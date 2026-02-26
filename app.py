@@ -1,6 +1,5 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from tavily import TavilyClient
 from dotenv import load_dotenv
@@ -23,32 +22,45 @@ async def search_competitors(request: SearchRequest):
     if not category:
         raise HTTPException(status_code=400, detail="カテゴリーを入力してください")
 
-    query = f"{category} 競合製品 サービス一覧 比較"
+    query = f"{category} 商品 価格 内容量 メーカー 特徴 比較"
 
     response = client.search(
         query=query,
         search_depth="advanced",
         max_results=10,
+        include_images=True,
         include_answer=True,
     )
 
+    images = response.get("images", [])
     competitors = []
     seen = set()
+    image_idx = 0
 
     for result in response.get("results", []):
         title = result.get("title", "").strip()
         url = result.get("url", "")
         content = result.get("content", "")
 
-        # タイトルから製品名を抽出（重複除去）
         product_name = extract_product_name(title)
-        if product_name and product_name.lower() not in seen:
-            seen.add(product_name.lower())
-            competitors.append({
-                "name": product_name,
-                "description": content[:120] + "..." if len(content) > 120 else content,
-                "url": url,
-            })
+        if not product_name or product_name.lower() in seen:
+            continue
+        seen.add(product_name.lower())
+
+        image_url = ""
+        if image_idx < len(images):
+            image_url = images[image_idx]
+            image_idx += 1
+
+        competitors.append({
+            "name": product_name,
+            "company": extract_company(content, url),
+            "price": extract_price(content),
+            "volume": extract_volume(content),
+            "features": content[:200] + "..." if len(content) > 200 else content,
+            "url": url,
+            "image": image_url,
+        })
 
     return {
         "category": category,
@@ -58,10 +70,45 @@ async def search_competitors(request: SearchRequest):
 
 
 def extract_product_name(title: str) -> str:
-    # 「〜 vs 〜」「〜 比較」などのパターンから製品名を取り出す
     title = re.sub(r"[\|｜\-–—].*$", "", title).strip()
-    title = re.sub(r"(の比較|比較|レビュー|とは|料金|評判).*$", "", title).strip()
+    title = re.sub(r"(の比較|比較|レビュー|とは|料金|評判|一覧|ランキング).*$", "", title).strip()
     return title[:40] if title else ""
+
+
+def extract_company(content: str, url: str) -> str:
+    patterns = [
+        r"(?:メーカー|製造|発売元|販売元|ブランド)[：:]\s*([^\s、。,\n]{2,20})",
+        r"([^\s、。,\n]{2,15})(?:株式会社|有限会社|合同会社)",
+        r"(?:株式会社|有限会社|合同会社)([^\s、。,\n]{2,15})",
+    ]
+    for p in patterns:
+        m = re.search(p, content)
+        if m:
+            return m.group(1).strip()[:30]
+    domain_match = re.search(r"https?://(?:www\.)?([^/]+)", url)
+    if domain_match:
+        parts = domain_match.group(1).split(".")
+        return parts[0] if parts else ""
+    return ""
+
+
+def extract_price(content: str) -> str:
+    patterns = [
+        r"([\d,]+)\s*円",
+        r"¥\s*([\d,]+)",
+        r"￥\s*([\d,]+)",
+    ]
+    for p in patterns:
+        for m in re.finditer(p, content):
+            val = m.group(1).replace(",", "")
+            if val.isdigit() and 100 <= int(val) <= 100000:
+                return f"¥{int(val):,}"
+    return ""
+
+
+def extract_volume(content: str) -> str:
+    m = re.search(r"([\d.]+\s*(?:g|kg|ml|mL|L|ℓ|oz|個|枚|本|袋|缶|粒|食|包))", content)
+    return m.group(1).strip() if m else ""
 
 
 app.mount("/", StaticFiles(directory="static", html=True), name="static")

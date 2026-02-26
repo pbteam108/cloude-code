@@ -9,38 +9,39 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f5f7fa;
+      background: #f0f2f5;
       color: #333;
       min-height: 100vh;
     }
 
     header {
-      background: #2563eb;
+      background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
       color: white;
-      padding: 20px 24px;
+      padding: 20px 28px;
     }
 
     header h1 { font-size: 1.4rem; font-weight: 700; }
     header p { font-size: 0.85rem; opacity: 0.85; margin-top: 4px; }
 
     main {
-      max-width: 800px;
-      margin: 32px auto;
+      max-width: 1300px;
+      margin: 28px auto;
       padding: 0 16px;
     }
 
-    .search-box {
+    /* Search */
+    .search-section {
       background: white;
       border-radius: 12px;
-      padding: 24px;
+      padding: 20px 24px;
       box-shadow: 0 1px 4px rgba(0,0,0,0.1);
       display: flex;
       gap: 12px;
     }
 
-    .search-box input {
+    .search-section input {
       flex: 1;
-      padding: 12px 16px;
+      padding: 11px 16px;
       border: 2px solid #e2e8f0;
       border-radius: 8px;
       font-size: 1rem;
@@ -48,10 +49,10 @@
       transition: border-color 0.2s;
     }
 
-    .search-box input:focus { border-color: #2563eb; }
+    .search-section input:focus { border-color: #2563eb; }
 
-    .search-box button {
-      padding: 12px 24px;
+    .search-section button {
+      padding: 11px 28px;
       background: #2563eb;
       color: white;
       border: none;
@@ -59,101 +60,208 @@
       font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
-      transition: background 0.2s;
       white-space: nowrap;
+      transition: background 0.2s;
     }
 
-    .search-box button:hover { background: #1d4ed8; }
-    .search-box button:disabled { background: #93c5fd; cursor: not-allowed; }
+    .search-section button:hover { background: #1d4ed8; }
+    .search-section button:disabled { background: #93c5fd; cursor: not-allowed; }
 
+    /* Column toggle panel */
+    .col-panel {
+      background: white;
+      border-radius: 12px;
+      padding: 14px 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      margin-top: 14px;
+    }
+
+    .col-panel-header {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+
+    .toggle-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .toggle-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 14px;
+      border: 2px solid #e2e8f0;
+      border-radius: 20px;
+      background: #f8fafc;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #555;
+    }
+
+    .toggle-chip.on {
+      border-color: #2563eb;
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    .toggle-chip input { display: none; }
+
+    /* Summary */
     #summary-box {
       background: #eff6ff;
       border-left: 4px solid #2563eb;
       border-radius: 8px;
-      padding: 16px;
-      margin-top: 24px;
-      font-size: 0.9rem;
-      line-height: 1.6;
+      padding: 14px 18px;
+      margin-top: 16px;
+      font-size: 0.88rem;
+      line-height: 1.65;
       display: none;
     }
 
-    #results {
-      margin-top: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 10px;
-      padding: 18px 20px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-      display: flex;
-      gap: 16px;
-      align-items: flex-start;
-      transition: box-shadow 0.2s;
-    }
-
-    .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
-
-    .card-num {
-      background: #2563eb;
-      color: white;
-      font-weight: 700;
-      font-size: 0.85rem;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    .card-body { flex: 1; }
-
-    .card-name {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #1e40af;
-    }
-
-    .card-name a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .card-name a:hover { text-decoration: underline; }
-
-    .card-desc {
-      font-size: 0.85rem;
-      color: #64748b;
-      margin-top: 4px;
-      line-height: 1.5;
-    }
-
+    /* Status / Loading */
     #status {
       text-align: center;
       color: #64748b;
-      margin-top: 32px;
-      font-size: 0.9rem;
+      padding: 36px 0;
+      font-size: 0.92rem;
     }
 
     .spinner {
       display: inline-block;
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       border: 3px solid #e2e8f0;
       border-top-color: #2563eb;
       border-radius: 50%;
-      animation: spin 0.8s linear infinite;
+      animation: spin 0.7s linear infinite;
       vertical-align: middle;
       margin-right: 8px;
     }
 
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Table */
+    .table-wrap {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      overflow-x: auto;
+      margin-top: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead th {
+      background: #f8fafc;
+      padding: 11px 14px;
+      text-align: left;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 2px solid #e2e8f0;
+      white-space: nowrap;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #f1f5f9;
+      transition: background 0.1s;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #f8fbff; }
+
+    td {
+      padding: 12px 14px;
+      font-size: 0.88rem;
+      vertical-align: middle;
+    }
+
+    /* Image cell */
+    .col-image { width: 90px; }
+
+    .product-img {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      display: block;
+    }
+
+    .img-placeholder {
+      width: 72px;
+      height: 72px;
+      background: #f1f5f9;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+    }
+
+    /* Name cell */
+    .col-name { font-weight: 600; max-width: 180px; }
+
+    .col-name a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+
+    .col-name a:hover { text-decoration: underline; }
+
+    /* Company cell */
+    .col-company { color: #555; max-width: 140px; }
+
+    /* Price cell */
+    .col-price {
+      font-weight: 700;
+      color: #dc2626;
+      white-space: nowrap;
+    }
+
+    /* Volume cell */
+    .col-volume { white-space: nowrap; color: #444; }
+
+    /* Features cell */
+    .col-features {
+      max-width: 320px;
+      color: #555;
+      line-height: 1.55;
+      font-size: 0.83rem;
+    }
+
+    /* Link cell */
+    .col-url a {
+      display: inline-block;
+      padding: 5px 12px;
+      background: #eff6ff;
+      color: #2563eb;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+
+    .col-url a:hover { background: #dbeafe; }
+
+    .empty { color: #ccc; }
 
     .error {
       background: #fef2f2;
@@ -161,51 +269,118 @@
       border-radius: 8px;
       padding: 16px;
       color: #b91c1c;
-      margin-top: 20px;
+      margin-top: 16px;
       font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      .search-section { flex-direction: column; }
     }
   </style>
 </head>
 <body>
   <header>
     <h1>競合製品リサーチ</h1>
-    <p>カテゴリーを入力すると、競合製品・サービスをリストアップします</p>
+    <p>カテゴリーを入力すると競合製品を一覧表示します</p>
   </header>
 
   <main>
-    <div class="search-box">
+    <div class="search-section">
       <input
         type="text"
         id="category"
-        placeholder="例: タスク管理ツール、CRMソフト、動画編集アプリ"
+        placeholder="例: 甘酒、グラノーラ、プロテインバー、オーガニックコーヒー"
         autocomplete="off"
       />
-      <button id="searchBtn" onclick="search()">検索</button>
+      <button id="searchBtn" onclick="doSearch()">検索</button>
+    </div>
+
+    <div class="col-panel" id="colPanel" style="display:none">
+      <div class="col-panel-header">表示する項目を選択</div>
+      <div class="toggle-list" id="toggleList"></div>
     </div>
 
     <div id="summary-box"></div>
-    <div id="results"></div>
     <div id="status"></div>
+    <div id="results"></div>
   </main>
 
   <script>
+    const COLUMNS = [
+      { key: "image",    label: "商品画像" },
+      { key: "name",     label: "商品名" },
+      { key: "company",  label: "会社名" },
+      { key: "price",    label: "価格" },
+      { key: "volume",   label: "内容量" },
+      { key: "features", label: "特徴" },
+      { key: "url",      label: "リンク" },
+    ];
+
+    let currentData = null;
+
+    // Load/save column prefs from localStorage
+    function loadColPrefs() {
+      try {
+        const s = localStorage.getItem("cr_cols");
+        if (s) return JSON.parse(s);
+      } catch (e) {}
+      return COLUMNS.map(c => c.key);
+    }
+
+    function saveColPrefs() {
+      const active = COLUMNS
+        .filter(c => document.querySelector(`input[data-col="${c.key}"]`)?.checked)
+        .map(c => c.key);
+      localStorage.setItem("cr_cols", JSON.stringify(active));
+    }
+
+    function getActiveCols() {
+      return COLUMNS
+        .filter(c => document.querySelector(`input[data-col="${c.key}"]`)?.checked)
+        .map(c => c.key);
+    }
+
+    function initToggles() {
+      const saved = loadColPrefs();
+      const list = document.getElementById("toggleList");
+      list.innerHTML = "";
+
+      COLUMNS.forEach(col => {
+        const isOn = saved.includes(col.key);
+        const chip = document.createElement("label");
+        chip.className = "toggle-chip" + (isOn ? " on" : "");
+        chip.innerHTML = `<input type="checkbox" data-col="${col.key}" ${isOn ? "checked" : ""}>${col.label}`;
+
+        chip.addEventListener("click", (e) => {
+          e.preventDefault();
+          const cb = chip.querySelector("input");
+          cb.checked = !cb.checked;
+          chip.classList.toggle("on", cb.checked);
+          saveColPrefs();
+          if (currentData) renderTable(currentData);
+        });
+
+        list.appendChild(chip);
+      });
+    }
+
     document.getElementById("category").addEventListener("keydown", (e) => {
-      if (e.key === "Enter") search();
+      if (e.key === "Enter") doSearch();
     });
 
-    async function search() {
+    async function doSearch() {
       const category = document.getElementById("category").value.trim();
       if (!category) return;
 
       const btn = document.getElementById("searchBtn");
-      const results = document.getElementById("results");
-      const status = document.getElementById("status");
+      const statusEl = document.getElementById("status");
       const summaryBox = document.getElementById("summary-box");
+      const resultsEl = document.getElementById("results");
 
       btn.disabled = true;
-      results.innerHTML = "";
+      resultsEl.innerHTML = "";
       summaryBox.style.display = "none";
-      status.innerHTML = '<span class="spinner"></span>検索中...';
+      statusEl.innerHTML = '<span class="spinner"></span>検索中...（10〜20秒ほどかかります）';
 
       try {
         const res = await fetch("/api/search", {
@@ -220,44 +395,103 @@
         }
 
         const data = await res.json();
-        status.innerHTML = "";
+        currentData = data;
+        statusEl.innerHTML = "";
+
+        document.getElementById("colPanel").style.display = "block";
 
         if (data.summary) {
           summaryBox.textContent = data.summary;
           summaryBox.style.display = "block";
         }
 
-        if (data.competitors.length === 0) {
-          status.textContent = "競合製品が見つかりませんでした。別のキーワードを試してください。";
-          return;
-        }
-
-        data.competitors.forEach((c, i) => {
-          const card = document.createElement("div");
-          card.className = "card";
-          card.innerHTML = `
-            <div class="card-num">${i + 1}</div>
-            <div class="card-body">
-              <div class="card-name">
-                ${c.url ? `<a href="${c.url}" target="_blank" rel="noopener">${escapeHtml(c.name)}</a>` : escapeHtml(c.name)}
-              </div>
-              <div class="card-desc">${escapeHtml(c.description)}</div>
-            </div>
-          `;
-          results.appendChild(card);
-        });
+        renderTable(data);
 
       } catch (err) {
-        status.innerHTML = "";
-        results.innerHTML = `<div class="error">${escapeHtml(err.message)}</div>`;
+        statusEl.innerHTML = "";
+        resultsEl.innerHTML = `<div class="error">${esc(err.message)}</div>`;
       } finally {
         btn.disabled = false;
       }
     }
 
-    function escapeHtml(str) {
-      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    function renderTable(data) {
+      const el = document.getElementById("results");
+
+      if (!data.competitors || data.competitors.length === 0) {
+        el.innerHTML = '<div id="status" style="text-align:center;padding:36px;color:#999">競合製品が見つかりませんでした。別のキーワードを試してください。</div>';
+        return;
+      }
+
+      const activeCols = getActiveCols();
+      const visibleCols = COLUMNS.filter(c => activeCols.includes(c.key));
+
+      if (visibleCols.length === 0) {
+        el.innerHTML = '<div id="status" style="text-align:center;padding:36px;color:#999">表示する項目を1つ以上選んでください。</div>';
+        return;
+      }
+
+      let html = '<div class="table-wrap"><table><thead><tr>';
+      visibleCols.forEach(col => {
+        html += `<th>${col.label}</th>`;
+      });
+      html += '</tr></thead><tbody>';
+
+      data.competitors.forEach(item => {
+        html += '<tr>';
+        visibleCols.forEach(col => {
+          html += `<td class="col-${col.key}">`;
+          switch (col.key) {
+            case "image":
+              if (item.image) {
+                html += `<img class="product-img" src="${esc(item.image)}" alt="${esc(item.name)}" loading="lazy" onerror="this.outerHTML='<div class=\\"img-placeholder\\">📦</div>'">`;
+              } else {
+                html += '<div class="img-placeholder">📦</div>';
+              }
+              break;
+            case "name":
+              html += item.url
+                ? `<a href="${esc(item.url)}" target="_blank" rel="noopener">${esc(item.name)}</a>`
+                : esc(item.name);
+              break;
+            case "company":
+              html += item.company ? esc(item.company) : '<span class="empty">—</span>';
+              break;
+            case "price":
+              html += item.price ? esc(item.price) : '<span class="empty">—</span>';
+              break;
+            case "volume":
+              html += item.volume ? esc(item.volume) : '<span class="empty">—</span>';
+              break;
+            case "features":
+              html += item.features ? esc(item.features) : '<span class="empty">—</span>';
+              break;
+            case "url":
+              html += item.url
+                ? `<a href="${esc(item.url)}" target="_blank" rel="noopener">サイトを見る →</a>`
+                : '<span class="empty">—</span>';
+              break;
+          }
+          html += '</td>';
+        });
+        html += '</tr>';
+      });
+
+      html += '</tbody></table></div>';
+      el.innerHTML = html;
     }
+
+    function esc(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    // Init
+    initToggles();
   </script>
 </body>
 </html>
