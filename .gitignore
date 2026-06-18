@@ -1,0 +1,18 @@
+# OAuth credentials and tokens (NEVER commit these)
+credentials.json
+token.json
+
+# Output files
+*.csv
+*.json.out
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# OS
+.DS_Store
