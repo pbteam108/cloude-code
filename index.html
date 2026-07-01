@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>チャットアプリ</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- 左サイドバー: 検索とチャット一覧 -->
+    <aside class="sidebar">
+      <header class="sidebar__header">
+        <h1 class="sidebar__title">チャット</h1>
+      </header>
+
+      <div class="search">
+        <input
+          id="searchInput"
+          class="search__input"
+          type="search"
+          placeholder="チャットを検索"
+          autocomplete="off"
+          aria-label="チャットを検索"
+        />
+      </div>
+
+      <nav class="chat-list" id="chatList" aria-label="チャット一覧">
+        <!-- チャット項目は app.js が描画します -->
+      </nav>
+    </aside>
+
+    <!-- メインエリア: 選択中のチャットスレッド -->
+    <main class="main">
+      <header class="main__header">
+        <h2 class="main__title" id="chatTitle">チャットを選択してください</h2>
+        <p class="main__subtitle" id="chatSubtitle"></p>
+      </header>
+
+      <section class="thread" id="thread" aria-live="polite">
+        <!-- メッセージは app.js が描画します -->
+      </section>
+
+      <footer class="composer">
+        <input
+          id="composerInput"
+          class="composer__input"
+          type="text"
+          placeholder="メッセージを入力"
+          autocomplete="off"
+          aria-label="メッセージを入力"
+        />
+        <button class="composer__send" id="composerSend" type="button">送信</button>
+      </footer>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
